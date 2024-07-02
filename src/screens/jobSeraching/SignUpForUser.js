@@ -153,7 +153,9 @@ const SignUpForUser = () => {
             style={styles.logo}
             source={require("../../images/logo.png")}
           ></Image>
-          <Text style={styles.title}>Create Account</Text>
+          <Text style={styles.title}>Create An Account</Text>
+          <Text style={styles.subtitle}>Please fill in the details below to create a new account.</Text>
+
 
           <CustomTextInput
             value={name}
@@ -250,7 +252,15 @@ const styles = StyleSheet.create({
     fontSize: 30,
     alignSelf: "center",
     fontWeight: "600",
-    marginTop: 0,
+    marginTop: 6,
+  },
+  subtitle: {
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "600",
+    marginTop: 10,
+    marginBottom: 10,
+
   },
   forgotpassword: {
     alignSelf: "flex-end",

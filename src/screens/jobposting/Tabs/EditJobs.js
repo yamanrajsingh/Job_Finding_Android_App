@@ -32,10 +32,13 @@ const EditJob = () => {
   const [BadComp, SetBadComp] = useState("");
   const [BadSkill, SetBadSkill] = useState("");
   const [BadCateg, SetBadCateg] = useState("");
+  const [BadLoc, SetBadLoc] = useState("");
 
   const [Exper, SetExper] = useState(route.params.data.experience);
   const [Pkg, SetPkg] = useState(route.params.data.package);
   const [Comp, SetComp] = useState(route.params.data.company);
+  const [Loc, SetLoc] = useState(route.params.data.location);
+
   const [Skill, SetSkill] = useState();
   const [Categ, SetCateg] = useState("");
   const [OpenCatM, setOpenCatM] = useState(false);
@@ -74,6 +77,7 @@ const EditJob = () => {
         company: Comp,
         category: profiles[SelectCAt].category,
         skill: SelectSkill,
+        location: Loc,
       })
       .then((res) => {
         setLoading(false);
@@ -93,6 +97,7 @@ const EditJob = () => {
     let validComp = true;
     let validCategory = true;
     let validSkill = true;
+    let validLoc = true;
 
     if (JobTitle == "") {
       validJobTitle = false;
@@ -100,6 +105,14 @@ const EditJob = () => {
     } else if (JobTitle != "") {
       validJobTitle = true;
       SetBadJobTitle("");
+    }
+
+    if (Loc == "") {
+      validLoc = false;
+      SetBadLoc("Please Enter Location");
+    } else if (Loc != "") {
+      validLoc = true;
+      SetBadLoc("");
     }
 
     if (JobDesc == "") {
@@ -167,17 +180,20 @@ const EditJob = () => {
       validJobDesc &&
       validJobTitle &&
       validPkg &&
-      validSkill
+      validSkill &&
+      validLoc
     );
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Image
+        {/* <Image
           style={styles.logo}
           source={require("../../../images/logo.png")}
-        ></Image>
+        ></Image> */}
+          <Text style={styles.title1}>Edit Job</Text>
+          <Text style={styles.subtitle}>Update your job details</Text>
         <CustomTextInput
           value={JobTitle}
           onChangeText={(txt) => {
@@ -200,6 +216,7 @@ const EditJob = () => {
         {badJobDesc != "" && <Text style={styles.errmsg}>{badJobDesc}</Text>}
 
         <CustomDropTextInput
+        style={styles.cat}
           value={Categ}
           onChangeText={(txt) => {
             SetCateg(txt);
@@ -266,8 +283,19 @@ const EditJob = () => {
         />
         {BadComp != "" && <Text style={styles.errmsg}>{BadComp}</Text>}
 
+        <CustomTextInput
+          value={Loc}
+          onChangeText={(txt) => {
+            SetLoc(txt);
+          }}
+          title={"Job Location"}
+          placeholder={"ex-New Delhi"}
+          error={BadLoc != "" ? true : false}
+        />
+        {BadLoc != "" && <Text style={styles.errmsg}>{BadLoc}</Text>}
+
         <CustomSolidButton
-          title={"Post Job"}
+          title={"Edit Job "}
           onClick={() => {
             if (validate()) {
               postJob();
@@ -337,6 +365,20 @@ const styles = StyleSheet.create({
     backgroundColor: BG_COLOR,
     flex: 1,
   },
+  title1: {
+    fontSize: moderateScale(24),
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop:moderateScale(0),
+    marginBottom:moderateScale(10),
+    color: "#333", // Dark gray
+  },
+  subtitle: {
+    fontSize: moderateScale(14),
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#333", // Dark gray
+  },
   mainView: {
     backgroundColor: "rgba(0,0,0.3)",
     width: "100%",
@@ -375,4 +417,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     color: "red",
   },
+  cat:{
+    borderColor:'red'
+  }
 });

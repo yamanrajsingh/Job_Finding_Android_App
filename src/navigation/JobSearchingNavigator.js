@@ -16,6 +16,7 @@ export default function JobSearchingNavigator() {
         component={Main1}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name="Jobsearch"
         component={Jobsearch}
@@ -37,7 +38,7 @@ export default function JobSearchingNavigator() {
         options={{ headerShown: true, title: "SignUp" }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="SavedJobs"
         component={SavedJobs}
         options={{ headerShown: true, title: "SavedJobs" }}

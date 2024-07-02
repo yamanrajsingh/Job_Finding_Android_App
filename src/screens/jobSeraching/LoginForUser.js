@@ -1,4 +1,11 @@
-import { Text, StyleSheet, SafeAreaView, Image, View } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  View,
+  ImageBackground,
+} from "react-native";
 import React, { useState } from "react";
 import CustomTextInput from "../../common/CustomTextInput";
 import { BG_COLOR } from "../../utils/Colors";
@@ -112,55 +119,65 @@ const LoginforUser = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require("../../images/logo.png")} />
-      </View>
-      <Text style={styles.title}>Login</Text>
-      <CustomTextInput
-        value={email}
-        onChangeText={(txt) => {
-          setEmail(txt);
-        }}
-        title={"Enter Email"}
-        placeholder={"xyz@gmail.com"}
-        error={bademail != "" ? true : false}
-        style={styles.inputField}
-      />
-      {bademail != "" && <Text style={styles.errmsg}>{bademail}</Text>}
+   
+      <SafeAreaView style={styles.container}>
+         <Image
+            style={styles.logo}
+            source={require("../../images/logo.png")}
+          ></Image>
+     
+          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.subtitle}>
+            Unlock endless job oppertunities Login to get stared.
+          </Text>
 
-      <CustomTextInput
-        value={password}
-        onChangeText={(txt) => {
-          setPassword(txt);
-        }}
-        title={"Enter Password"}
-        placeholder={"**********"}
-        error={badpassword != "" ? true : false}
-        style={styles.inputField}
-      />
-      {badpassword != "" && <Text style={styles.errmsg}>{badpassword}</Text>}
+          <CustomTextInput
+            value={email}
+            onChangeText={(txt) => {
+              setEmail(txt);
+            }}
+            title={"Enter Email"}
+            placeholder={"xyz@gmail.com"}
+            error={bademail != "" ? true : false}
+            style={styles.inputField}
+          />
+          {bademail != "" && <Text style={styles.errmsg}>{bademail}</Text>}
 
-      <Text style={styles.forgotpassword}>Forgot Password?</Text>
-      <CustomSolidButton
-        title={"Login"}
-        onClick={() => {
-          if (validate()) {
-            loginUser();
-          }
-        }}
-        style={styles.loginButton}
-      />
+          <CustomTextInput
+            value={password}
+            onChangeText={(txt) => {
+              setPassword(txt);
+            }}
+            title={"Enter Password"}
+            placeholder={"**********"}
+            error={badpassword != "" ? true : false}
+            style={styles.inputField}
+          />
+          {badpassword != "" && (
+            <Text style={styles.errmsg}>{badpassword}</Text>
+          )}
 
-      <CustomBorderBtn
-        title={"Create an Account"}
-        onClick={() => {
-          navigation.navigate("SignUpForUser");
-        }}
-        style={styles.createAccountButton}
-      />
-      <Loader visible={loading} />
-    </SafeAreaView>
+          <Text style={styles.forgotpassword}>Forgot Password?</Text>
+          <CustomSolidButton
+            title={"Login"}
+            onClick={() => {
+              if (validate()) {
+                loginUser();
+              }
+            }}
+            style={styles.loginButton}
+          />
+
+          <CustomBorderBtn
+            title={"Create an Account"}
+            onClick={() => {
+              navigation.navigate("SignUpForUser");
+            }}
+            style={styles.createAccountButton}
+          />
+      
+        <Loader visible={loading} />
+      </SafeAreaView>
   );
 };
 
@@ -168,19 +185,28 @@ export default LoginforUser;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BG_COLOR,
+    backgroundColor:'white'
   },
   logo: {
     width: 100,
     height: 100,
     alignSelf: "center",
-    marginTop: 60,
+    marginTop: 40,
   },
   title: {
-    fontSize: 30,
+    fontSize: 35,
     alignSelf: "center",
     fontWeight: "600",
     marginTop: 10,
+    color: "black",
+  },
+  subtitle: {
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "600",
+    marginTop: 10,
+    marginBottom: 10,
+    color: "black",
   },
   forgotpassword: {
     alignSelf: "flex-end",
@@ -188,9 +214,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "500",
     fontSize: 16,
+    color: "black",
   },
   errmsg: {
     marginLeft: 25,
-    color: "red",
+    color: "#800000",
   },
+
 });

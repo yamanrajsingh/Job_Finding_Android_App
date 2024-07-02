@@ -1,70 +1,187 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
-import { verticalScale } from "react-native-size-matters";
+import React, { useState, useEffect } from "react";
+import { moderateScale, verticalScale } from "react-native-size-matters";
 import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR } from "../../utils/Colors";
 import Apply from "./Tabs/Apply";
-import Inbox from "./Tabs/Inbox";
 import Profile from "./Tabs/Profile";
 import Home from "./Tabs/Home";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import Jobsearch from "./Jobsearch";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 const DrawerScreen = () => {
-  const [currentTab, setCurrentTab] = useState(0);
+  const [selectedTab, setCurrentTab] = useState(0);
+  const [ProfileImg, SetProfileImg] = useState("");
+  const [isLogin, SetisLogin] = useState(false);
+  const isFoucused = useIsFocused();
 
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    getdata();
+    getPicData();
+  }, [isFoucused]);
+
+  const getPicData = async () => {
+    const id = await AsyncStorage.getItem("EMAIL");
+    firebase
+      .firestore()
+      .collection("users")
+      .where("email", "==", id)
+      .get()
+      .then(async (data) => {
+        let temp = [];
+        data.docs.forEach((item) => {
+          temp.push({ ...item.data(), id: item.id });
+        });
+        SetProfileImg(temp[0].profileImage);
+        await AsyncStorage.setItem("PROFILE", temp[0].profileImage);
+      });
+  };
+  const getdata = async () => {
+    const id = await AsyncStorage.getItem("USER_ID");
+    const type = await AsyncStorage.getItem("USER_TYPE");
+    const nameuser = await AsyncStorage.getItem("NAME");
+    const emailuser = await AsyncStorage.getItem("EMAIL");
+
+    if (id != null && type != null) {
+      if (type == "user") {
+        SetisLogin(true);
+       
+      }
+    }
+  };
   return (
     <View style={styles.container}>
-      {currentTab === 0 ? (
+      {selectedTab === 0 ? (
         <Home />
-      ) : currentTab === 1 ? (
+      ) : selectedTab === 1 ? (
+        <Jobsearch/>
+      ) : selectedTab === 2 ? (
         <Apply />
-      ) : currentTab === 2 ? (
-        <Inbox />
       ) : (
         <Profile />
       )}
 
       <View style={styles.bottomView}>
-        <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(0)}>
+        <TouchableOpacity
+          style={[
+            styles.bottomTab,
+            {
+              borderTopWidth: selectedTab === 0 ? 3 : 0,
+            },
+          ]}
+          onPress={() => {
+            setCurrentTab(0);
+          }}
+        >
+          
           <Image
-            source={
-              currentTab === 0
-                ? require("../../images/home1.png")
-                : require("../../images/home.png")
-            }
-            style={styles.tabIcon}
+            source={require("../../images/home.png")}
+            style={[
+              styles.tabIcon,
+              { tintColor: selectedTab === 0 ? "#9370DB" : "#7f8c8d" },
+            ]}
           />
+          <Text
+            style={[
+              styles.tabText,
+              { color: selectedTab === 0 ? "#9370DB" : "#7f8c8d" },
+            ]}
+          >
+            Home
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(1)}>
+        <TouchableOpacity
+          style={[
+            styles.bottomTab,
+            {
+              borderTopWidth: selectedTab === 1 ? 3 : 0,
+            },
+          ]}
+          onPress={() => {
+            setCurrentTab(1);
+          }}
+        >
           <Image
-            source={
-              currentTab === 1
-                ? require("../../images/send1.png")
-                : require("../../images/send.png")
-            }
-            style={styles.tabIcon}
+            source={require("../../images/search.png")}
+            style={[
+              styles.tabIcon,
+              { tintColor: selectedTab === 1 ? "#9370DB" : "#7f8c8d" },
+            ]}
           />
+          <Text
+            style={[
+              styles.tabText,
+              { color: selectedTab === 1 ? "#9370DB" : "#7f8c8d" },
+            ]}
+          >
+            Search
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(2)}>
+        <TouchableOpacity
+          style={[
+            styles.bottomTab,
+            {
+              borderTopWidth: selectedTab === 3 ? 3 : 0,
+            },
+          ]}
+          onPress={() => {
+            setCurrentTab(2);
+          }}
+        >
           <Image
-            source={
-              currentTab === 2
-                ? require("../../images/chat1.png")
-                : require("../../images/chat.png")
-            }
-            style={styles.tabIcon}
+            source={require("../../images/send.png")}
+            style={[
+              styles.tabIcon,
+              { tintColor: selectedTab === 2 ? "#9370DB" : "#7f8c8d" },
+            ]}
           />
+          <Text
+            style={[
+              styles.tabText,
+              { color: selectedTab === 2 ? "#9370DB" : "#7f8c8d" },
+            ]}
+          >
+            Applied
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(3)}>
-          <Image
-            source={
-              currentTab === 3
-                ? require("../../images/user.png")
-                : require("../../images/Profilelogo.png")
-            }
-            style={styles.tabIcon}
-          />
+        <TouchableOpacity
+          style={[
+            styles.bottomTab,
+            {
+              borderTopWidth: selectedTab === 4 ? 3 : 0,
+            },
+          ]}
+          onPress={() => {
+            setCurrentTab(4);
+          }}
+        >
+
+          
+          {ProfileImg != undefined && isLogin ? (
+            <Image style={[styles.tabIcon1,{ borderWidth:1.5}]} source={{ uri: ProfileImg  }} />
+            
+          ) : (
+            <Image
+              style={styles.tabIcon}
+              source={require("../../images/profile.png")}
+            />
+          )}
+          {/* <Image
+            source={require("../../images/profile.png")}
+            style={[
+              styles.tabIcon,
+              // { tintColor: selectedTab === 3 ? "#9370DB" : "#7f8c8d" },
+            ]}
+          /> */}
+         
         </TouchableOpacity>
       </View>
     </View>
@@ -81,25 +198,45 @@ const styles = StyleSheet.create({
   bottomView: {
     width: "100%",
     height: verticalScale(60),
-    position: "absolute",
-    bottom: 0,
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 10,
+    elevation: 10,
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "#fff",
-    borderTopWidth: 0.5,
-    borderTopColor: "#ccc",
+    alignItems: "center",
   },
-  tab: {
+  bottomTab: {
     flex: 1,
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    borderTopWidth: 3,
+    borderTopColor: "transparent",
   },
   tabIcon: {
-    width: verticalScale(30),
-    height: verticalScale(30),
-    resizeMode: "contain",
-    tintColor: PRIMARY_COLOR, // Change the tint color to match your theme
+    width: moderateScale(28),
+    height: moderateScale(28),
+  },
+  tabIcon1: {
+    width: moderateScale(38),
+    height: moderateScale(38),
+    borderRadius:moderateScale(20),
+    marginBottom: moderateScale(10),
+   
+    borderColor:'#9370DB'
+   
+  },
+  tabIconAdd: {
+    width: moderateScale(40),
+    height: moderateScale(40),
+    tintColor: "black",
+  },
+  tabText: {
+    marginTop: moderateScale(4),
+    fontSize: moderateScale(10),
+    fontWeight: "500",
   },
 });

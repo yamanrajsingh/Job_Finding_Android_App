@@ -12,7 +12,7 @@ import { BG_COLOR } from "../utils/Colors";
 const CustomDropTextInput = ({ title, placeholder, error, onClick }) => {
   return (
     <TouchableOpacity
-      style={[styles.input, { borderColor: error ? "red" : "#9e9e9e" }]}
+      style={[styles.input, { borderColor: error ? "red" : "#00CED1" }]}
       onPress={() => {
         onClick();
       }}
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+   
   },
   title: {
     alignSelf: "flex-start",

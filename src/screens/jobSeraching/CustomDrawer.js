@@ -8,7 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { BG_COLOR, Text_COLOR } from "../../utils/Colors";
+
 import {
   moderateScale,
   moderateVerticalScale,
@@ -17,6 +17,8 @@ import {
 } from "react-native-size-matters";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 const COLORS = {
   background: "#ffffff",
@@ -43,20 +45,37 @@ const FONTS = {
 const CustomDrawer = ({ navigation }) => {
   const [name, Setname] = useState("");
   const [email, setEmail] = useState("");
-
+  const [ProfileImg, SetProfileImg] = useState("");
   const [isLogin, SetisLogin] = useState(false);
-  // const navigation = useNavigation();
   const isFoucused = useIsFocused();
+
   useEffect(() => {
     getdata();
+    getPicData();
   }, [isFoucused]);
+
+  const getPicData = async () => {
+    const id = await AsyncStorage.getItem("EMAIL");
+    firebase
+      .firestore()
+      .collection("users")
+      .where("email", "==", id)
+      .get()
+      .then(async (data) => {
+        let temp = [];
+        data.docs.forEach((item) => {
+          temp.push({ ...item.data(), id: item.id });
+        });
+        SetProfileImg(temp[0].profileImage);
+        await AsyncStorage.setItem("PROFILE", temp[0].profileImage);
+      });
+  };
 
   const getdata = async () => {
     const id = await AsyncStorage.getItem("USER_ID");
     const type = await AsyncStorage.getItem("USER_TYPE");
     const nameuser = await AsyncStorage.getItem("NAME");
     const emailuser = await AsyncStorage.getItem("EMAIL");
-    console.log(name);
 
     if (id != null && type != null) {
       if (type == "user") {
@@ -66,6 +85,7 @@ const CustomDrawer = ({ navigation }) => {
       }
     }
   };
+
   const logout = async () => {
     await AsyncStorage.removeItem("USER_ID");
     await AsyncStorage.removeItem("USER_TYPE");
@@ -80,10 +100,16 @@ const CustomDrawer = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
-        <Image
-          source={require("../../images/profile.png")}
-          style={styles.profile}
-        />
+        <TouchableOpacity>
+          {ProfileImg != undefined && isLogin ? (
+            <Image style={styles.profile} source={{ uri: ProfileImg }} />
+          ) : (
+            <Image
+              style={styles.profile}
+              source={require("../../images/profile.png")}
+            />
+          )}
+        </TouchableOpacity>
         <View>
           <Text style={styles.heading}>
             {isLogin ? name : "Build Your Profile"}
@@ -109,13 +135,12 @@ const CustomDrawer = ({ navigation }) => {
               navigation.navigate("SignUpForUser");
             }}
           >
-            <Text style={[styles.loginText, { color: COLORS.primary }]}>
+            <Text style={[styles.loginText, { color:"black" }]}>
               Sign Up
             </Text>
           </TouchableOpacity>
         </View>
       )}
-
       <View style={styles.seperator}></View>
       <FlatList
         contentContainerStyle={{ marginTop: moderateScale(10) }}
@@ -125,7 +150,7 @@ const CustomDrawer = ({ navigation }) => {
             title: "Contact Us",
             icon: require("../../images/contact-mail.png"),
           },
-          { title: "Theme", icon: require("../../images/themes.png") },
+          { title: "About Us", icon: require("../../images/info.png") },
           isLogin
             ? { title: "Logout", icon: require("../../images/logout.png") }
             : { title: "Login", icon: require("../../images/key.png") },
@@ -138,12 +163,16 @@ const CustomDrawer = ({ navigation }) => {
                 if (index == 0) {
                   navigation.closeDrawer();
                   navigation.navigate("SavedJobs");
-                } else if (index == 3) {
-                  if (isLogin) {
-                    logout();
-                  } else {
-                    navigation.navigate("LoginForUser");
-                  }
+                } else if (index == 1) {
+                  navigation.closeDrawer();
+                  navigation.navigate("Contact Us");
+                } else if (index == 2) {
+                  navigation.closeDrawer();
+                  navigation.navigate("About Us");
+                } else if (index == 3 && isLogin) {
+                  logout();
+                } else if (index == 3 && !isLogin) {
+                  navigation.navigate("LoginForUser");
                 }
               }}
             >
@@ -159,18 +188,6 @@ const CustomDrawer = ({ navigation }) => {
           );
         }}
       />
-      {/* {isLogin && (
-        <View style={styles.btnView}>
-          <TouchableOpacity
-            style={styles.logoutbtn}
-            onPress={() => {
-              logout();
-            }}
-          >
-            <Text style={styles.logText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      )} */}
     </SafeAreaView>
   );
 };
@@ -186,13 +203,14 @@ const styles = StyleSheet.create({
     width: scale(50),
     height: scale(50),
     borderRadius: scale(25),
-    borderWidth: 2,
-    borderColor: COLORS.primary,
+    borderWidth: 1,
+    borderColor: "#8A2BE2",
+    marginRight: moderateScale(0),
   },
   topView: {
     flexDirection: "row",
     marginTop: moderateScale(50),
-    marginLeft: moderateScale(20),
+    marginLeft: moderateScale(10),
   },
   heading: {
     fontSize: 19,
@@ -201,14 +219,12 @@ const styles = StyleSheet.create({
     marginLeft: moderateScale(10),
     marginTop: moderateScale(10),
     color: COLORS.textPrimary,
-    fontFamily: FONTS.bold,
   },
   Subheading: {
     fontSize: moderateScale(14),
     width: "100%",
     marginLeft: moderateScale(10),
     color: COLORS.textSecondary,
-    fontFamily: FONTS.regular,
   },
   btnView: {
     width: "100%",
@@ -220,7 +236,7 @@ const styles = StyleSheet.create({
   loginbtn: {
     width: "40%",
     height: verticalScale(35),
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#9370DB",
     borderRadius: moderateScale(20),
     justifyContent: "center",
     alignItems: "center",
@@ -228,7 +244,7 @@ const styles = StyleSheet.create({
   signupbtn: {
     width: "40%",
     height: verticalScale(35),
-    borderColor: COLORS.primary,
+    borderColor: "#9370DB",
     borderWidth: 1,
     borderRadius: moderateScale(20),
     justifyContent: "center",
@@ -237,7 +253,6 @@ const styles = StyleSheet.create({
   loginText: {
     color: COLORS.buttonText,
     fontWeight: "500",
-    fontFamily: FONTS.regular,
   },
   seperator: {
     width: "90%",
@@ -266,13 +281,12 @@ const styles = StyleSheet.create({
   menuicon: {
     width: moderateScale(25),
     height: moderateScale(25),
-    tintColor: COLORS.textPrimary,
+    tintColor:"#8A2BE2",
   },
   menuText: {
     fontSize: moderateScale(16),
     marginLeft: moderateScale(10),
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.regular,
+    color: "#8A2BE2",
   },
   logoutbtn: {
     width: "80%",
@@ -289,6 +303,5 @@ const styles = StyleSheet.create({
   logText: {
     color: COLORS.buttonText,
     fontWeight: "500",
-    fontFamily: FONTS.regular,
   },
 });

@@ -186,6 +186,8 @@ const UpdateProfile = () => {
         style={styles.logo}
         source={require("../../images/logo.png")}
       ></Image>
+      <Text  style={styles.title}>Update Profile</Text>
+      <Text style={styles.subtitle}>Keep Your Information Up to Date for Better Job Matches</Text>
       <CustomTextInput
         value={name}
         onChangeText={(txt) => {
@@ -269,6 +271,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
+    alignSelf: "center",
+    fontWeight: "600",
+    margin: 5,
+  },
+  subtitle: {
+    fontSize: 15,
     alignSelf: "center",
     fontWeight: "600",
     marginTop: 0,

@@ -1,75 +1,99 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
-import React from 'react'
-import { BG_COLOR,Text_COLOR } from '../../utils/Colors'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/native'
+import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
+import React from "react";
+import { BG_COLOR, Text_COLOR } from "../../utils/Colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { moderateScale } from "react-native-size-matters";
 
 export default function SelectUser() {
-    const navigation=useNavigation();
+  const navigation = useNavigation();
 
   return (
-    <View style={style.container}>
-      <Image source={require('../../images/logo.png')}  style={style.logo}></Image>
-      <Text style={style.title}>What you are looking for?</Text>
+    <ImageBackground
+      source={require("../../images/bg.jpeg")}
+      style={style.background} 
+    >
+      <View style={style.container}>
+        <View style={style.box}>
+          <Text style={style.title}>What you are looking for?</Text>
+          <TouchableOpacity
+            style={style.hirebtn}
+            onPress={() => {
+              navigation.navigate("JobPostingNavigator");
+            }}
+          >
+            <Text style={style.btntext1}>Want to Hire Candidate</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={style.hirebtn} onPress={()=>{
-        navigation.navigate("JobPostingNavigator")
-      }}>
-        <Text style={style.btntext1}>Want to Hire Candidate</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={style.jobbtn} onPress={()=>{
-        navigation.navigate("JobSearchingNavigator")
-      }}>
-        <Text style={style.btntext2}>Want to Get Job</Text>
-      </TouchableOpacity>
-    </View>
-  )
+          <TouchableOpacity
+            style={style.jobbtn}
+            onPress={() => {
+              navigation.navigate("JobSearchingNavigator");
+            }}
+          >
+            <Text style={style.btntext2}>Want to Get Job</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ImageBackground>
+  );
 }
 
-const style=StyleSheet.create({
-  container:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:BG_COLOR
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
-  title:{
-    fontSize:20,
-    fontWeight:'600'
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    opacity: 0.9,
   },
-  hirebtn:{
-    width:300,
-    height:45,
-    backgroundColor:Text_COLOR,
-    borderRadius:10,
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop:20
+  box:{
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop:moderateScale(600)
   },
-  jobbtn:{
-    width:300,
-    height:45,
-    borderRadius:10,
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop:20,
-    borderWidth:1,
-
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "white",
+    textAlign:'center'
   },
-  btntext1:{
-    color:BG_COLOR,
-    fontSize:16,
-    fontWeight:'500'
+  hirebtn: {
+    width: 300,
+    height: 45,
+    backgroundColor:"#20B2AA",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
   },
-  btntext2:{
-    color:Text_COLOR,
-    fontSize:16,
-    fontWeight:'500'
+  jobbtn: {
+    width: 300,
+    height: 45,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor:"#20B2AA"
   },
-  logo:{
-    width:140,
-    height:140,
-    marginBottom:10
-  }
-})
+  btntext1: {
+    color: "black",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  btntext2: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  logo: {
+    width: 140,
+    height: 140,
+    marginBottom: 10,
+  },
+});

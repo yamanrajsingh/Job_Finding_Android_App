@@ -12,6 +12,12 @@ import EditJob from "../screens/jobposting/Tabs/EditJobs";
 import UpdateProfile from "../screens/jobposting/UpdateProfile";
 import ChangeProfilePicComp from "../screens/jobposting/ChangeProfilePicComp";
 import main from "../screens/jobSeraching/Main1";
+import ChangePic from "../screens/jobSeraching/ChangePic";
+import ContactUs from "../screens/jobSeraching/ContactUs";
+import AboutUs from "../screens/jobSeraching/AboutUs";
+import ChatScreen from "../screens/jobSeraching/ChatScreen";
+import SearchC from "../screens/jobposting/Tabs/SearchC";
+import UserProfile from "../screens/jobposting/UserProfile";
 const STACK = createStackNavigator()
 const MainNavigator=()=> {
   return (
@@ -28,8 +34,18 @@ const MainNavigator=()=> {
           options={{ headerShown: false }}
         />
         <STACK.Screen
+          name='Search Company'
+          component={SearchC}
+          options={{ headerShown: true }}
+        />
+        <STACK.Screen
           name='JobPostingNavigator'
           component={JobPostingNavigator}
+          options={{ headerShown: false }}
+        />
+          <STACK.Screen
+          name='ChatScreen'
+          component={ChatScreen}
           options={{ headerShown: false }}
         />
         <STACK.Screen
@@ -40,6 +56,26 @@ const MainNavigator=()=> {
          <STACK.Screen
           name='Change Profile Picture'
           component={ChangeProfilePicComp}
+          options={{ headerShown: true }}
+        />
+          <STACK.Screen
+          name='User Profile'
+          component={UserProfile}
+          options={{ headerShown: true }}
+        />
+         <STACK.Screen
+          name='Profile Picture'
+          component={ChangePic}
+          options={{ headerShown: true }}
+        />
+          <STACK.Screen
+          name='Contact Us'
+          component={ContactUs}
+          options={{ headerShown: true }}
+        />
+         <STACK.Screen
+          name='About Us'
+          component={AboutUs}
           options={{ headerShown: true }}
         />
          <STACK.Screen

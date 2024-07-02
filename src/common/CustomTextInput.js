@@ -11,7 +11,7 @@ const CustomTextInput = ({
   keyboardType,
 }) => {
   return (
-    <View style={[styles.input, { borderColor: error ? "red" : "#9e9e9e" }]}>
+    <View style={[styles.input, { borderColor: error ? "red" : "#00CED1" }]}>
       <Text style={[styles.title, { color: error ? "red" : "black" }]}>
         {title}
       </Text>
@@ -47,6 +47,6 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     position: "absolute",
     top: -8,
-    backgroundColor: BG_COLOR,
+    backgroundColor: 'white',
   },
 });

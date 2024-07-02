@@ -193,7 +193,9 @@ const SignUpForCompany = () => {
             style={styles.logo}
             source={require("../../images/logo.png")}
           ></Image>
-          <Text style={styles.title}>Create Account</Text>
+          <Text style={styles.title}>Recruiter Sign Up</Text>
+          <Text style={styles.subtitle}>Manage your job postings and applications</Text>
+
 
           <CustomTextInput
             value={name}
@@ -306,13 +308,22 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     alignSelf: "center",
-    marginTop: 40,
+    marginTop: 30,
   },
   title: {
     fontSize: 30,
     alignSelf: "center",
     fontWeight: "600",
-    marginTop: 0,
+    marginTop: 10,
+    color: "black",
+  },
+  subtitle: {
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "600",
+    marginTop: 10,
+    marginBottom: 10,
+    color: "black",
   },
   forgotpassword: {
     alignSelf: "flex-end",

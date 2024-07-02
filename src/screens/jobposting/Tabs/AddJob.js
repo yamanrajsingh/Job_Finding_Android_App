@@ -39,6 +39,9 @@ const AddJob = () => {
   const [Comp, SetComp] = useState("");
   const [BadComp, SetBadComp] = useState("");
 
+  const [Loc, SetLoc] = useState("");
+  const [BadLoc, SetBadLoc] = useState("");
+
   const [Skill, SetSkill] = useState("");
   const [BadSkill, SetBadSkill] = useState("");
 
@@ -67,6 +70,7 @@ const AddJob = () => {
         company: Comp,
         category: profiles[SelectCAt].category,
         skill: SelectSkill,
+        location :Loc,
       })
       .then((res) => {
         setLoading(false);
@@ -86,6 +90,8 @@ const AddJob = () => {
     let validComp = true;
     let validCategory = true;
     let validSkill = true;
+    let validLoc = true;
+
 
     if (JobTitle == "") {
       validJobTitle = false;
@@ -93,6 +99,14 @@ const AddJob = () => {
     } else if (JobTitle != "") {
       validJobTitle = true;
       SetBadJobTitle("");
+    }
+
+    if (Loc == "") {
+      validLoc = false;
+      SetBadLoc("Please Enter Location");
+    } else if (Loc != "") {
+      validLoc = true;
+      SetBadLoc("");
     }
 
     if (JobDesc == "") {
@@ -160,17 +174,20 @@ const AddJob = () => {
       validJobDesc &&
       validJobTitle &&
       validPkg &&
-      validSkill
+      validSkill &&
+      validLoc
     );
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Image
+        {/* <Image
           style={styles.logo}
           source={require("../../../images/logo.png")}
-        ></Image>
+        ></Image> */}
+        <Text style={styles.title}>Job Posting</Text>
+        <Text style={styles.subtitle}>Share your job openings with candidates</Text>
         <CustomTextInput
           value={JobTitle}
           onChangeText={(txt) => {
@@ -258,6 +275,17 @@ const AddJob = () => {
           error={BadComp != "" ? true : false}
         />
         {BadComp != "" && <Text style={styles.errmsg}>{BadComp}</Text>}
+
+        <CustomTextInput
+          value={Loc}
+          onChangeText={(txt) => {
+            SetLoc(txt);
+          }}
+          title={"Job Location"}
+          placeholder={"ex-New Delhi"}
+          error={BadLoc!= "" ? true : false}
+        />
+        {BadLoc != "" && <Text style={styles.errmsg}>{BadLoc}</Text>}
 
         <CustomSolidButton
           title={"Post Job"}
@@ -350,19 +378,27 @@ const styles = StyleSheet.create({
     paddingLeft: moderateScale(20),
     borderBottomWidth: 1,
     borderBottomColor: "#E0E0E0",
+   
   },
   title: {
     fontSize: moderateScale(24),
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: moderateScale(20),
+    marginTop:moderateScale(0),
+    marginBottom:moderateScale(10),
+    color: "#333", // Dark gray
+  },
+  subtitle: {
+    fontSize: moderateScale(14),
+    fontWeight: "bold",
+    textAlign: "center",
     color: "#333", // Dark gray
   },
   logo: {
-    width: moderateScale(100),
-    height: moderateScale(100),
+    width: moderateScale(90),
+    height: moderateScale(90),
     alignSelf: "center",
-    marginBottom: moderateScale(20),
+    marginBottom: moderateScale(10),
     // tintColor: "#FF6347", // Tomato color
   },
   errmsg: {

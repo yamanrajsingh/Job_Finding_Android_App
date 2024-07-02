@@ -47,15 +47,16 @@ const styles = StyleSheet.create({
   logo: {
     width: moderateScale(25),
     height: moderateScale(25),
+    tintColor: "#20B2AA",
   },
   title: {
     marginLeft: moderateScale(15),
     fontSize: moderateScale(18),
-    color: "#333333",
+    color: "#20B2AA",
   },
   nextIcon: {
     width: moderateScale(15),
     height: moderateScale(15),
-    tintColor: "#707070",
+    tintColor: "#20B2AA",
   },
 });

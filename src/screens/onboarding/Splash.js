@@ -26,8 +26,7 @@ const Splash = () => {
   return (
     <View style={styles.container}>
       <Image source={require("../../images/logo.png")} style={styles.logo} />
-      {/* <Text style={styles.name}>Find My Job</Text> */}
-      <Text style={styles.slogan}>Post & Find in One Tap</Text>
+      <Text style={styles.slogan}>Post & Find in One Tap 💙  </Text>
     </View>
   );
 };

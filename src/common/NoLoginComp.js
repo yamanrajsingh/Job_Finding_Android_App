@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
 import React from "react";
 import { BG_COLOR, Text_COLOR } from "../utils/Colors";
 import { moderateScale, verticalScale } from "react-native-size-matters";
@@ -11,11 +11,12 @@ const NoLoginComp = ({ heading, desc }) => {
     <View style={styles.container}>
       <Text style={styles.heading}>{heading ? heading : ""}</Text>
       <Text style={styles.desc}>{desc ? desc : ""}</Text>
-      <CustomSolidButton
-        title={"Login"}
-        style={styles.loginbtn}
-        onClick={() => {navigation.navigate("LoginForUser")}}
-      />
+      <TouchableOpacity
+              style={styles.loginbtn}
+              onPress={() => navigation.navigate("LoginForUser")}
+            >
+              <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
       <View style={styles.signupView}>
         <Text style={styles.text1}> Don't have an account? </Text>
         <Text style={styles.text1}> Create Account </Text>
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(30),
     fontWeight: "600",
     textAlign: "center",
+    color:'#2F4F4F'
   },
   desc: {
     fontSize: moderateScale(16),
@@ -46,6 +48,7 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(20),
     fontWeight: "500",
     textAlign: "center",
+     color:'#708090'
   },
   loginbtn: {
     width: "40%",
@@ -54,12 +57,13 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(20),
     justifyContent: "center",
     alignItems: "center",
+   
   },
   signupView: {
     flexDirection: "row",
     alignSelf: "center",
     width: "90%",
-    marginTop: moderateScale(50),
+    marginTop: moderateScale(10),
     justifyContent: "center",
   },
   text1: {
@@ -70,5 +74,27 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     fontWeight: "700",
     marginLeft: moderateScale(10),
+  },
+  loginbtn: {
+    width: "80%",
+    height: verticalScale(40),
+    backgroundColor: "#9370DB",
+    borderRadius: moderateScale(20),
+    marginLeft:moderateScale(30),
+    marginTop:moderateScale(20),
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  loginText: {
+    color: "#FFF",
+    fontWeight: "500",
   },
 });

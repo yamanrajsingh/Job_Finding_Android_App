@@ -5,33 +5,30 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { BG_COLOR, Text_COLOR } from "../../utils/Colors";
-import { verticalScale } from "react-native-size-matters";
+import { verticalScale, moderateScale } from "react-native-size-matters";
 import MyJobs from "./Tabs/MyJobs";
 import SearchC from "./Tabs/SearchC";
-import ChatC from "./Tabs/ChatC";
+import ChatC from "./Tabs/Notify";
 import ProfileC from "./Tabs/ProfileC";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { moderateScale } from "react-native-size-matters";
+import Notify from "./Tabs/Notify";
 
 const DashboardForCompany = () => {
   const navigate = useNavigation();
-  // const id = await AsyncStorage.getItem("USER_ID")
-  // if(id==null) navigate.navigate('SelectUser');
   const [selectedTab, SetSelectedTab] = useState(0);
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
-      {selectedTab == 0 ? (
+      {selectedTab === 0 ? (
         <MyJobs />
-      ) : selectedTab == 1 ? (
+      ) : selectedTab === 1 ? (
         <SearchC />
-      ) : selectedTab == 2 ? (
-        <ChatC />
+      ) : selectedTab === 2 ? (
+        <Notify />
       ) : (
         <ProfileC
           onJobsClick={() => {
@@ -45,8 +42,8 @@ const DashboardForCompany = () => {
           style={[
             styles.bottomTab,
             {
-              borderTopWidth: selectedTab == 0 ? 3 : 0,
-              borderTopColor: selectedTab == 0 ? "#3498db" : "transparent",
+              borderTopWidth: selectedTab === 0 ? 3 : 0,
+           
             },
           ]}
           onPress={() => {
@@ -57,17 +54,22 @@ const DashboardForCompany = () => {
             source={require("../../images/home.png")}
             style={[
               styles.tabIcon,
-              { tintColor: selectedTab == 0 ? "#3498db" : "#7f8c8d" },
+              { tintColor: selectedTab === 0 ? "#20B2AA" : "#7f8c8d" },
             ]}
           />
+          <Text style={[
+            styles.tabText,
+            { color: selectedTab === 0 ? "#20B2AA" : "#7f8c8d" }
+          ]}>
+            Home
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.bottomTab,
             {
-              borderTopWidth: selectedTab == 1 ? 3 : 0,
-              borderTopColor: selectedTab == 1 ? "#3498db" : "transparent",
+              borderTopWidth: selectedTab === 1 ? 3 : 0,
             },
           ]}
           onPress={() => {
@@ -78,17 +80,23 @@ const DashboardForCompany = () => {
             source={require("../../images/search.png")}
             style={[
               styles.tabIcon,
-              { tintColor: selectedTab == 1 ? "#3498db" : "#7f8c8d" },
+              { tintColor: selectedTab === 1 ? "#20B2AA" : "#7f8c8d" },
             ]}
           />
+          <Text style={[
+            styles.tabText,
+            { color: selectedTab === 1 ? "#20B2AA" : "#7f8c8d" }
+          ]}>
+            Search
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.bottomTab,
             {
-              borderTopWidth: selectedTab == 2 ? 3 : 0,
-              borderTopColor: selectedTab == 2 ? "#3498db" : "transparent",
+              borderTopWidth: selectedTab === 2 ? 3 : 0,
+          
             },
           ]}
           onPress={() => {
@@ -105,8 +113,7 @@ const DashboardForCompany = () => {
           style={[
             styles.bottomTab,
             {
-              borderTopWidth: selectedTab == 3 ? 3 : 0,
-              borderTopColor: selectedTab == 3 ? "#3498db" : "transparent",
+              borderTopWidth: selectedTab === 3 ? 3 : 0,
             },
           ]}
           onPress={() => {
@@ -114,20 +121,25 @@ const DashboardForCompany = () => {
           }}
         >
           <Image
-            source={require("../../images/chat.png")}
+            source={require("../../images/bell.png")}
             style={[
               styles.tabIcon,
-              { tintColor: selectedTab == 2 ? "#3498db" : "#7f8c8d" },
+              { tintColor: selectedTab === 2 ? "#20B2AA" : "#7f8c8d" },
             ]}
           />
+          <Text style={[
+            styles.tabText,
+            { color: selectedTab === 2 ? "#20B2AA" : "#7f8c8d" }
+          ]}>
+            Notify
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.bottomTab,
             {
-              borderTopWidth: selectedTab == 4 ? 3 : 0,
-              borderTopColor: selectedTab == 4 ? "#3498db" : "transparent",
+              borderTopWidth: selectedTab === 4 ? 3 : 0,
             },
           ]}
           onPress={() => {
@@ -138,9 +150,15 @@ const DashboardForCompany = () => {
             source={require("../../images/user.png")}
             style={[
               styles.tabIcon,
-              { tintColor: selectedTab == 3 ? "#3498db" : "#7f8c8d" },
+              { tintColor: selectedTab === 3 ? "#20B2AA" : "#7f8c8d" },
             ]}
           />
+          <Text style={[
+            styles.tabText,
+            { color: selectedTab === 3 ? "#20B2AA" : "#7f8c8d" }
+          ]}>
+            Profile
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -157,8 +175,8 @@ const styles = StyleSheet.create({
   bottomView: {
     width: "100%",
     height: verticalScale(60),
-    backgroundColor: BG_COLOR,
-    shadowColor: "rgba(0,0,0,0.1)",
+    backgroundColor: '#E0FFFF',
+    shadowColor: "#20B2AA",
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 10,
@@ -182,6 +200,11 @@ const styles = StyleSheet.create({
   tabIconAdd: {
     width: moderateScale(40),
     height: moderateScale(40),
-    tintColor: "#3498db",
+    tintColor: "#20B2AA",
+  },
+  tabText: {
+    marginTop: moderateScale(4),
+    fontSize: moderateScale(10),
+    fontWeight: "500",
   },
 });

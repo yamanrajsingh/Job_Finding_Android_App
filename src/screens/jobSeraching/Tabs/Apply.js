@@ -12,7 +12,8 @@ import { FlatList } from "react-native-gesture-handler";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firebase } from "../../../../Config";
-import { moderateScale, verticalScale } from "react-native-size-matters";
+import { moderateScale } from "react-native-size-matters";
+import Loader from "../../../common/Loader"; // Import Loader component
 
 const COLORS = {
   background: "#f5f5f5",
@@ -24,12 +25,12 @@ const COLORS = {
   buttonBackground: "#e74c3c",
   buttonText: "#ffffff",
   emptyText: "#95a5a6",
-};
-
-const FONTS = {
-  regular: "Roboto-Regular",
-  bold: "Roboto-Bold",
-  italic: "Roboto-Italic",
+  cardBorder: "#bdc3c7",
+  jobTitle: "#34495e",
+  jobDescription: "#7f8c8d",
+  company: "#27ae60",
+  posterName: "#2980b9",
+  category: "#8e44ad",
 };
 
 const Apply = () => {
@@ -37,6 +38,7 @@ const Apply = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(false); // Loading state
 
   useEffect(() => {
     getdata();
@@ -57,6 +59,7 @@ const Apply = () => {
   }, []);
 
   const getJobs = async () => {
+    setLoading(true); // Start loading
     const id = await AsyncStorage.getItem("USER_ID");
 
     firebase
@@ -66,8 +69,8 @@ const Apply = () => {
       .get()
       .then((querySnapshot) => {
         if (querySnapshot.empty) {
-          console.log("No matching documents.");
-          setJobs([]); // clear jobs if no matches
+          setJobs([]); // Clear jobs if no matches
+          setLoading(false); // End loading
           return;
         }
         const jobsArray = [];
@@ -75,9 +78,11 @@ const Apply = () => {
           jobsArray.push({ id: doc.id, ...doc.data() });
         });
         setJobs(jobsArray);
+        setLoading(false); // End loading
       })
       .catch((error) => {
         console.error("Error getting documents: ", error);
+        setLoading(false); // End loading
       });
   };
 
@@ -86,7 +91,11 @@ const Apply = () => {
 
     try {
       if (jobId && userId) {
-        await firebase.firestore().collection("applied_jobs").doc(jobId).delete();
+        await firebase
+          .firestore()
+          .collection("applied_jobs")
+          .doc(jobId)
+          .delete();
         console.log("Applied job deleted successfully");
         getJobs();
         Alert.alert("Success", "Applied job deleted successfully");
@@ -104,10 +113,21 @@ const Apply = () => {
       {!isLogin && (
         <NoLoginComp
           heading={"One place to track your Application"}
-          desc={"Track all your jobs which you applied but for that you need to create an account first"}
+          desc={
+            "Track all your jobs which you applied but for that you need to create an account first"
+          }
         />
       )}
-      {jobs.length > 0 && isLogin ? (
+      {isLogin && (
+        <View style={styles.infoBox}>
+          <Text style={styles.infoText}>
+            Here you can track all the jobs you have applied
+          </Text>
+        </View>
+      )}
+      {isLogin && loading ? (
+        <Loader /> // Show loader while loading
+      ) : jobs.length > 0 ? (
         <FlatList
           data={jobs}
           keyExtractor={(item) => item.id}
@@ -119,8 +139,8 @@ const Apply = () => {
               }}
             >
               <View style={styles.topview}>
-                <Text style={styles.listText}>{item.jobTitle}</Text>
-                <TouchableOpacity
+                <Text style={styles.jobTitle}>{item.jobTitle}</Text>
+                {/* <TouchableOpacity
                   onPress={() => {
                     deleteSavedJob(item.id);
                   }}
@@ -129,18 +149,27 @@ const Apply = () => {
                     source={require("../../../images/saved.png")}
                     style={styles.deleteIcon}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
               <Text style={styles.jobDescription}>{item.jobDescription}</Text>
-              <Text style={styles.jobDetails}>{"Job Category: " + item.category}</Text>
-              <Text style={styles.jobDetails}>{"Company: " + item.company}</Text>
-              <Text style={styles.jobDetails}>{"Posted By: " + item.posterName}</Text>
+              <Text style={styles.jobDetails}>
+                <Text style={styles.label}>Job Category: </Text>
+                <Text style={styles.category}>{item.category}</Text>
+              </Text>
+              <Text style={styles.jobDetails}>
+                <Text style={styles.label}>Company: </Text>
+                <Text style={styles.company}>{item.company}</Text>
+              </Text>
+              <Text style={styles.jobDetails}>
+                <Text style={styles.label}>Location: </Text>
+                <Text style={styles.posterName}>{item.location}</Text>
+              </Text>
             </TouchableOpacity>
           )}
         />
       ) : (
         <View style={styles.emptyview}>
-          <Text style={styles.emptyText}>No Jobs Applied</Text>
+          {isLogin && <Text style={styles.emptyText}>No Jobs Applied</Text>}
         </View>
       )}
     </View>
@@ -152,15 +181,25 @@ export default Apply;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
-    padding: moderateScale(10),
+    backgroundColor: "white",
+  },
+  infoBox: {
+     marginTop: moderateScale(20),
+  },
+  infoText: {
+    fontSize: moderateScale(22),
+    color: "#2F4F4F",
+    textAlign: "center",
+    marginBottom: moderateScale(10),
   },
   card: {
-    backgroundColor: COLORS.listBackground,
+    backgroundColor: "white",
     borderRadius: moderateScale(10),
     padding: moderateScale(15),
+    marginLeft:moderateScale(10),
+    marginRight:moderateScale(10),
     marginVertical: moderateScale(10),
-    shadowColor: "#000",
+    shadowColor: "#9370DB",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -168,11 +207,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  },
-  listText: {
-    fontSize: moderateScale(18),
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.bold,
+    borderColor: "#C0C0C0",
+    borderWidth: 1,
   },
   topview: {
     flexDirection: "row",
@@ -184,26 +220,40 @@ const styles = StyleSheet.create({
     width: moderateScale(20),
     height: moderateScale(20),
   },
+  jobTitle: {
+    fontSize: moderateScale(20),
+    color: "#9370DB",
+    fontWeight: "bold",
+  },
   jobDescription: {
     fontSize: moderateScale(16),
-    color: COLORS.textSecondary,
-    fontFamily: FONTS.regular,
-    marginVertical: moderateScale(5),
+    color: "#696969",
+    fontWeight:'500'
   },
   jobDetails: {
     fontSize: moderateScale(14),
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.italic,
+    color: "#696969",
     marginVertical: moderateScale(2),
   },
+  label: {
+    fontWeight: "bold",
+    color: "#2F4F4F",
+  },
+  category: {
+    color:"#708090",
+  },
+  company: {
+    color:"#708090",
+  },
+  posterName: {
+    color:"#708090",
+  },
   emptyview: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   emptyText: {
     fontSize: moderateScale(20),
     color: COLORS.emptyText,
-    fontFamily: FONTS.regular,
   },
 });

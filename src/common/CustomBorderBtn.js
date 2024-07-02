@@ -17,7 +17,7 @@ const style=StyleSheet.create({
     btn:{
         width:'90%',
         height:45,
-        borderColor:Text_COLOR,
+        borderColor:"#20B2AA",
         borderWidth:1,
         alignSelf:'center',
         marginTop:20,
@@ -27,7 +27,7 @@ const style=StyleSheet.create({
 
     },
     title:{
-        color:Text_COLOR,
+        color:"black",
         fontWeight:'500',
         fontSize:16
     }

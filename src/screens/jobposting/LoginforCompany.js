@@ -96,7 +96,10 @@ const LoginforCompany = () => {
         style={styles.logo}
         source={require("../../images/logo.png")}
       ></Image>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Recruiter Login</Text>
+      <Text style={styles.subtitle}>
+      Manage your job postings and applications
+      </Text>
       <CustomTextInput
         value={email}
         onChangeText={(txt) => {
@@ -158,6 +161,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "600",
     marginTop: 10,
+  },
+  subtitle: {
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "600",
+    marginTop: 10,
+    marginBottom: 10,
+    color: "black",
   },
   forgotpassword: {
     alignSelf: "flex-end",

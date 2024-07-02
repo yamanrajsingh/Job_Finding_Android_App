@@ -26,7 +26,7 @@ const JobPostingNavigator = () => {
       />
       <STACK.Screen
         name="AddJob"
-        options={{ headerShown: false }}
+        options={{ headerShown: true }}
         component={AddJob}
       />
     </STACK.Navigator>
