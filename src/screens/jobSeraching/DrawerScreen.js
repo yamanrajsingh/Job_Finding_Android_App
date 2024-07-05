@@ -16,10 +16,7 @@ const DrawerScreen = () => {
   const [ProfileImg, SetProfileImg] = useState("");
   const [isLogin, SetisLogin] = useState(false);
   const isFoucused = useIsFocused();
-
-
   const navigation = useNavigation();
-
   useEffect(() => {
     getdata();
     getPicData();
@@ -48,10 +45,7 @@ const DrawerScreen = () => {
     const emailuser = await AsyncStorage.getItem("EMAIL");
 
     if (id != null && type != null) {
-      if (type == "user") {
-        SetisLogin(true);
-       
-      }
+      if (type == "user")  SetisLogin(true);
     }
   };
   return (
@@ -78,7 +72,6 @@ const DrawerScreen = () => {
             setCurrentTab(0);
           }}
         >
-          
           <Image
             source={require("../../images/home.png")}
             style={[
@@ -95,7 +88,6 @@ const DrawerScreen = () => {
             Home
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={[
             styles.bottomTab,
@@ -123,7 +115,6 @@ const DrawerScreen = () => {
             Search
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={[
             styles.bottomTab,
@@ -151,7 +142,6 @@ const DrawerScreen = () => {
             Applied
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={[
             styles.bottomTab,
@@ -162,9 +152,7 @@ const DrawerScreen = () => {
           onPress={() => {
             setCurrentTab(4);
           }}
-        >
-
-          
+        >    
           {ProfileImg != undefined && isLogin ? (
             <Image style={[styles.tabIcon1,{ borderWidth:1.5}]} source={{ uri: ProfileImg  }} />
             
@@ -174,14 +162,6 @@ const DrawerScreen = () => {
               source={require("../../images/profile.png")}
             />
           )}
-          {/* <Image
-            source={require("../../images/profile.png")}
-            style={[
-              styles.tabIcon,
-              // { tintColor: selectedTab === 3 ? "#9370DB" : "#7f8c8d" },
-            ]}
-          /> */}
-         
         </TouchableOpacity>
       </View>
     </View>

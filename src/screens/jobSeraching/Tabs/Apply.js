@@ -140,16 +140,6 @@ const Apply = () => {
             >
               <View style={styles.topview}>
                 <Text style={styles.jobTitle}>{item.jobTitle}</Text>
-                {/* <TouchableOpacity
-                  onPress={() => {
-                    deleteSavedJob(item.id);
-                  }}
-                >
-                  <Image
-                    source={require("../../../images/saved.png")}
-                    style={styles.deleteIcon}
-                  />
-                </TouchableOpacity> */}
               </View>
               <Text style={styles.jobDescription}>{item.jobDescription}</Text>
               <Text style={styles.jobDetails}>

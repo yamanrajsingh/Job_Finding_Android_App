@@ -306,6 +306,7 @@ const Profile = () => {
               <Text style={styles.email}>
                 {userData ? userData.email : "NA"}
               </Text>
+              <Text style={styles.email}>+91 {userData ? userData.contact : "NA"}</Text>
               <TouchableOpacity
                 style={styles.editBtn}
                 onPress={() => {

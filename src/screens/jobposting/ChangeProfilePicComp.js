@@ -34,11 +34,6 @@ const ChangeProfilePicComp = () => {
     }
   };
 
-  // useEffect( async ()=>{
-  //   const img = await AsyncStorage.getItem("PROFILE");
-  //   console.log(img);
-  //   setImageData(img)
-  // },[])
 
   const uploadPic = async () => {
     const id = await AsyncStorage.getItem("USER_ID");

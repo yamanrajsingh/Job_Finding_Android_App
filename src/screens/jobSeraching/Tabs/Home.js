@@ -39,6 +39,17 @@ const Home = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
+           <Image
+              source={require("../../../images/active.png")}
+              style={styles.notify}
+            />
+          {/* <Icon name="notifications-outline" size={25} color="#000" style={{ marginRight: 15 }} /> */}
+        </TouchableOpacity>
+      ),
+    });
     getdata();
     fetchJobs();
   }, [isFocused]);
@@ -295,4 +306,11 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(18),
     color: "#666",
   },
+  notify:{
+    height:25,
+    width:25,
+    color:'#000',
+    marginRight:moderateScale(15),
+   
+  }
 });
