@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import Loader from "../../../common/Loader";
 
 const Profile = () => {
+
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true); // Loading state
@@ -306,7 +307,9 @@ const Profile = () => {
               <Text style={styles.email}>
                 {userData ? userData.email : "NA"}
               </Text>
-              <Text style={styles.email}>+91 {userData ? userData.contact : "NA"}</Text>
+              <Text style={styles.email}>
+                +91 {userData ? userData.contact : "NA"}
+              </Text>
               <TouchableOpacity
                 style={styles.editBtn}
                 onPress={() => {
@@ -315,6 +318,7 @@ const Profile = () => {
               >
                 <Text style={styles.editBtnText}>Change Profile Picture</Text>
               </TouchableOpacity>
+             
             </View>
           </View>
 
@@ -707,8 +711,8 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginRight: 20,
-    borderWidth:1.5,
-    borderColor:"#9370DB",
+    borderWidth: 1.5,
+    borderColor: "#9370DB",
   },
   profileInfo: {
     flex: 1,
@@ -754,7 +758,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color:'#9370DB' 
+    color: "#9370DB",
   },
   addBtn: {
     fontSize: 18,
@@ -769,7 +773,7 @@ const styles = StyleSheet.create({
   skillName: {
     fontSize: 16,
     fontWeight: "bold",
-    color:'#2F4F4F'
+    color: "#2F4F4F",
   },
   skillDetails: {
     fontSize: 14,

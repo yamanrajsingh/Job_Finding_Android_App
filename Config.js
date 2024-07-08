@@ -1,4 +1,3 @@
-
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -13,8 +12,6 @@ const firebaseConfig = {
   appId: "1:225981175744:web:505645ca7e488b4ee11a25",
   measurementId: "G-X5B6JSZ7JW",
 };
-
-
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
